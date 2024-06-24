@@ -11,10 +11,10 @@ import com.project.slotsync.model.User;
 import com.project.slotsync.repository.RoleRepository;
 import com.project.slotsync.repository.UserRepository;
 import com.project.slotsync.security.jwt.JwtUtils;
-import com.project.slotsync.security.request.LoginRequest;
-import com.project.slotsync.security.request.SignupRequest;
-import com.project.slotsync.security.response.JwtResponse;
-import com.project.slotsync.security.response.MessageResponse;
+import com.project.slotsync.request.LoginRequest;
+import com.project.slotsync.request.SignupRequest;
+import com.project.slotsync.response.JwtResponse;
+import com.project.slotsync.response.MessageResponse;
 import com.project.slotsync.security.service.UserDetailsImpl;
 import jakarta.validation.Valid;
 
@@ -79,7 +79,7 @@ public class AuthController {
 
         // Create new user's account
         User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()));
+                encoder.encode(signUpRequest.getPassword()), signUpRequest.getName());
 
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();

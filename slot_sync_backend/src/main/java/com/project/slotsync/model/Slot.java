@@ -1,13 +1,25 @@
 package com.project.slotsync.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDateTime;
 
+@Entity
 public class Slot {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String title;
 
+    @NotBlank
     private String description;
 
     private LocalDateTime date;
@@ -18,8 +30,23 @@ public class Slot {
 
     private Long currParticipants;
 
+    private Double currRating;
+
+    private Long noOfRatings;
+
     public Slot() {
 
+    }
+
+    public Slot(Long noOfRatings, Double currRating, Long currParticipants, LocalDateTime date, String description, Long duration, Long maxParticipants, String title) {
+        this.noOfRatings = noOfRatings;
+        this.currRating = currRating;
+        this.currParticipants = currParticipants;
+        this.date = date;
+        this.description = description;
+        this.duration = duration;
+        this.maxParticipants = maxParticipants;
+        this.title = title;
     }
 
     public Long getCurrParticipants() {
@@ -78,6 +105,22 @@ public class Slot {
         this.title = title;
     }
 
+    public Double getCurrRating() {
+        return currRating;
+    }
+
+    public void setCurrRating(Double currRating) {
+        this.currRating = currRating;
+    }
+
+    public Long getNoOfRatings() {
+        return noOfRatings;
+    }
+
+    public void setNoOfRatings(Long noOfRatings) {
+        this.noOfRatings = noOfRatings;
+    }
+
     @Override
     public String toString() {
         return "Slot{" +
@@ -88,6 +131,8 @@ public class Slot {
                 ", date=" + date +
                 ", duration=" + duration +
                 ", maxParticipants=" + maxParticipants +
+                ", currRating=" + currRating +
+                ", noOfRatings=" + noOfRatings +
                 '}';
     }
 }

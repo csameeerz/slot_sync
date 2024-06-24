@@ -18,12 +18,12 @@ public class User {
     private Long id;
 
     @NotBlank
-    @Size(max = 20)
+    @Size(max = 20, min = 4)
     private String username;
 
-    @JsonIgnore
+    //@JsonIgnore
     @NotBlank
-    @Size(max = 120)
+    @Size(max = 120, min = 8)
     private String password;
 
     @NotBlank
@@ -31,6 +31,7 @@ public class User {
     @Email
     private String email;
 
+    @NotBlank
     private String name;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -40,10 +41,11 @@ public class User {
     public User() {
     }
 
-    public User(String username, String email, String password) {
+    public User(String username, String email, String password, String name) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.name = name;
     }
 
     public String getEmail() {

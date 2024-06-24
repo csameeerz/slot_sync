@@ -1,4 +1,4 @@
-package com.project.slotsync.security.response;
+package com.project.slotsync.response;
 
 public class MessageResponse {
     private String message;

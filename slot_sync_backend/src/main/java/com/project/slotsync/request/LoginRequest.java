@@ -1,4 +1,4 @@
-package com.project.slotsync.security.request;
+package com.project.slotsync.request;
 
 import jakarta.validation.constraints.NotBlank;
 

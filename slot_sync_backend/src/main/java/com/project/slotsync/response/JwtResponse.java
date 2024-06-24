@@ -1,4 +1,4 @@
-package com.project.slotsync.security.response;
+package com.project.slotsync.response;
 
 import java.util.List;
 

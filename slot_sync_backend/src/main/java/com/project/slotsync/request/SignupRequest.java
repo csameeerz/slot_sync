@@ -1,4 +1,4 @@
-package com.project.slotsync.security.request;
+package com.project.slotsync.request;
 
 import java.util.Set;
 
@@ -17,8 +17,19 @@ public class SignupRequest {
     private Set<String> role;
 
     @NotBlank
+    private String name;
+
+    @NotBlank
     @Size(min = 6, max = 40)
     private String password;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getUsername() {
         return username;

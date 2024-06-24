@@ -1,11 +1,18 @@
 package com.project.slotsync.model;
 
 import com.project.slotsync.constants.BookingStatus;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 import java.time.LocalDateTime;
 
+@Entity
 public class Booking {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long slotId;
@@ -18,6 +25,13 @@ public class Booking {
 
     public Booking() {
 
+    }
+
+    public Booking(LocalDateTime date, Long slotId, BookingStatus status, Long userId) {
+        this.date = date;
+        this.slotId = slotId;
+        this.status = status;
+        this.userId = userId;
     }
 
     public Long getId() {
