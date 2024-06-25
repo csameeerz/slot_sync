@@ -1,0 +1,5 @@
+Profile Icon: https://www.svgrepo.com/svg/495590/profile-circle
+PalleteSync Logo: https://www.freepik.com/free-vector/illustration-share-icon_2606502.htm#fromView=search&page=1&position=3&uuid=115ffe47-5973-4efd-8a10-6f8817cfb0e2
+PalleteSync Text: https://fonts.googleapis.com/css2?family=Economica:ital,wght@0,400;0,700;1,400;1,700&display=swap
+Navigation Bar Text: https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap
+Logout Text: https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap
