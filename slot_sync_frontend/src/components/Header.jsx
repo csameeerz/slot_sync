@@ -1,6 +1,6 @@
 import React from 'react';
-import PaletteSyncLogo from '../assets/PaletteSyncLogo.png'
-import { ReactComponent as ProfileIcon } from '../assets/profileIcon.svg';
+import PaletteSyncLogo from '../assets/logo/PaletteSyncLogo.png'
+import { ReactComponent as ProfileIcon } from '../assets/icons/profileIcon.svg';
 import './Header.css';
 
 export default function Header() {

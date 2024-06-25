@@ -23,15 +23,17 @@ export default function SlotSyncApp() {
         <AuthProvider>
             <BrowserRouter>
                 <Header />
-                <Routes>
-                    <Route path='/' element={ <Landing /> } />
-                    <Route path='/login' element={ <Login />} />
-                    {/* <Route path='/welcome/:username' element={ <LoggedInRoute><WelcomeComponent /></LoggedInRoute> } /> */}
-                    {/* <Route path='/tasks' element={ <LoggedInRoute><ShowTasksComponent /></LoggedInRoute> } /> */}
-                    {/* <Route path='/task/:id' element={ <LoggedInRoute><TaskComponent /></LoggedInRoute> } /> */}
-                    <Route path='/logout' element={ <LoggedInRoute><Logout /></LoggedInRoute> } />
-                    {/* <Route path='*' element={ <ErrorComponent />} /> */}
-                </Routes>
+                <div className="content">
+                    <Routes>
+                        <Route path='/' element={ <Landing /> } />
+                        <Route path='/login' element={ <Login />} />
+                        {/* <Route path='/welcome/:username' element={ <LoggedInRoute><WelcomeComponent /></LoggedInRoute> } /> */}
+                        {/* <Route path='/tasks' element={ <LoggedInRoute><ShowTasksComponent /></LoggedInRoute> } /> */}
+                        {/* <Route path='/task/:id' element={ <LoggedInRoute><TaskComponent /></LoggedInRoute> } /> */}
+                        <Route path='/logout' element={ <LoggedInRoute><Logout /></LoggedInRoute> } />
+                        {/* <Route path='*' element={ <ErrorComponent />} /> */}
+                    </Routes>
+                </div>
                 <Footer />
             </BrowserRouter>
         </AuthProvider>
