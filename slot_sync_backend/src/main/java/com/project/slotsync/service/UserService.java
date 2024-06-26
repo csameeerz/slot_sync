@@ -45,6 +45,17 @@ public class UserService {
         }
     }
 
+    public ApiResponse<String> verifyUsername(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+
+        if (user.isPresent()) {
+            return new ApiResponse<>("User found", user.get().getUsername());
+        }
+        else {
+            return new ApiResponse<>("No user found", null);
+        }
+    }
+
     public ApiResponse<List<User>> showAllUserDetails() {
         List<User> allUsers = userRepository.findAll();
         if (allUsers.isEmpty()) {

@@ -5,6 +5,8 @@ import com.project.slotsync.model.Booking;
 import com.project.slotsync.request.CreateBookingRequest;
 import com.project.slotsync.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,31 +21,56 @@ public class BookingController {
 
     @PostMapping
     @PreAuthorize("hasRole('USER')")
-    public ApiResponse<Booking> bookSlot(@RequestBody CreateBookingRequest request) {
-        return bookingService.bookSlot(request);
+    public ResponseEntity<ApiResponse<Booking>> bookSlot(@RequestBody CreateBookingRequest request) {
+        ApiResponse<Booking> booking = bookingService.bookSlot(request);
+        if (booking.getData() != null) {
+            return ResponseEntity.ok(booking);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(booking);
+        }
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    public ApiResponse<Booking> changeStatusOfBooking(@PathVariable Long id, @RequestParam String status) {
-        return bookingService.changeStatusOfBooking(id, status);
+    public ResponseEntity<ApiResponse<Booking>> changeStatusOfBooking(@PathVariable Long id, @RequestParam String status) {
+        ApiResponse<Booking> booking = bookingService.changeStatusOfBooking(id, status);
+        if (booking.getData() != null) {
+            return ResponseEntity.ok(booking);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(booking);
+        }
     }
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ApiResponse<List<Booking>> showAllBookings() {
-        return bookingService.showAllBookings();
+    public ResponseEntity<ApiResponse<List<Booking>>> showAllBookings() {
+        ApiResponse<List<Booking>> bookings = bookingService.showAllBookings();
+        if (bookings.getData() != null) {
+            return ResponseEntity.ok(bookings);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(bookings);
+        }
     }
 
     @GetMapping("/slots/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ApiResponse<List<Booking>> showAllBookingsForSlot(@PathVariable Long id) {
-        return bookingService.showAllBookingsForSlot(id);
+    public ResponseEntity<ApiResponse<List<Booking>>> showAllBookingsForSlot(@PathVariable Long id) {
+        ApiResponse<List<Booking>> bookings = bookingService.showAllBookingsForSlot(id);
+        if (bookings.getData() != null) {
+            return ResponseEntity.ok(bookings);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(bookings);
+        }
     }
 
     @GetMapping("/users/{id}")
     @PreAuthorize("hasRole('USER')")
-    public ApiResponse<List<Booking>> showAllBookingsByUser(@PathVariable Long id) {
-        return bookingService.showAllBookingsByUser(id);
+    public ResponseEntity<ApiResponse<List<Booking>>> showAllBookingsByUser(@PathVariable Long id) {
+        ApiResponse<List<Booking>> bookings = bookingService.showAllBookingsByUser(id);
+        if (bookings.getData() != null) {
+            return ResponseEntity.ok(bookings);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(bookings);
+        }
     }
 }

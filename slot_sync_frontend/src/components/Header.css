@@ -17,6 +17,12 @@
     align-items: center;
 }
 
+.centered {
+    justify-content: center;
+    text-align: center;
+}
+
+
 .logo {
     height: 40px;
     margin-right: 10px;

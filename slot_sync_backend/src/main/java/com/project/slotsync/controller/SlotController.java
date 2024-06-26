@@ -8,6 +8,8 @@ import com.project.slotsync.request.UpdateSlotRequest;
 import com.project.slotsync.service.SlotService;
 import com.project.slotsync.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,30 +24,55 @@ public class SlotController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ApiResponse<Slot> createNewSlot(@RequestBody CreateSlotRequest request) {
-        return slotService.createNewSlot(request);
+    public ResponseEntity<ApiResponse<Slot>> createNewSlot(@RequestBody CreateSlotRequest request) {
+        ApiResponse<Slot> slot = slotService.createNewSlot(request);
+        if (slot.getData() != null) {
+            return ResponseEntity.ok(slot);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(slot);
+        }
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ApiResponse<Slot> updateExistingSlot(@PathVariable Long id, @RequestBody UpdateSlotRequest request) {
-        return slotService.updateExistingSlot(id, request);
+    public ResponseEntity<ApiResponse<Slot>> updateExistingSlot(@PathVariable Long id, @RequestBody UpdateSlotRequest request) {
+        ApiResponse<Slot> slot =  slotService.updateExistingSlot(id, request);
+        if (slot.getData() != null) {
+            return ResponseEntity.ok(slot);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(slot);
+        }
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ApiResponse<String> deleteExistingSlot(@PathVariable Long id) {
-        return slotService.deleteExistingSlot(id);
+    public ResponseEntity<ApiResponse<String>> deleteExistingSlot(@PathVariable Long id) {
+        ApiResponse<String> slot = slotService.deleteExistingSlot(id);
+        if (slot.getData() != null) {
+            return ResponseEntity.ok(slot);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(slot);
+        }
     }
 
     @GetMapping
-    public ApiResponse<List<Slot>> showAllExistingSlots() {
-        return slotService.showAllExistingSlots();
+    public ResponseEntity<ApiResponse<List<Slot>>> showAllExistingSlots() {
+        ApiResponse<List<Slot>> slots = slotService.showAllExistingSlots();
+        if (slots.getData() != null) {
+            return ResponseEntity.ok(slots);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(slots);
+        }
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<Slot> showExistingSlot(@PathVariable Long id) {
-        return slotService.showExistingSlot(id);
+    public ResponseEntity<ApiResponse<Slot>> showExistingSlot(@PathVariable Long id) {
+        ApiResponse<Slot> slot = slotService.showExistingSlot(id);
+        if (slot.getData() != null) {
+            return ResponseEntity.ok(slot);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(slot);
+        }
     }
 
 //    @GetMapping
@@ -54,7 +81,12 @@ public class SlotController {
 //    }
 
     @PutMapping("/rating/{id}")
-    public ApiResponse<String> rateExistingSlot(@PathVariable Long id, @RequestParam Double rating) {
-        return slotService.rateExistingSlot(id, rating);
+    public ResponseEntity<ApiResponse<String>> rateExistingSlot(@PathVariable Long id, @RequestParam Double rating) {
+        ApiResponse<String> slot = slotService.rateExistingSlot(id, rating);
+        if (slot.getData() != null) {
+            return ResponseEntity.ok(slot);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(slot);
+        }
     }
 }

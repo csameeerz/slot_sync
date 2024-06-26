@@ -1,0 +1,46 @@
+.home-container {
+    background-color: #f0f9f6; /* very light green background */
+    padding: 50px;
+    text-align: center;
+}
+
+.art-animation {
+    /* Define styles for your art-related animation or artwork */
+    margin-bottom: 30px;
+}
+
+.services-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.service-box {
+    width: 45%;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.service-box:hover {
+    transform: translateY(-5px);
+}
+
+.workshops {
+    border: 2px solid #4caf50; /* Green border for workshops */
+}
+
+.bookings {
+    border: 2px solid #2196f3; /* Blue border for bookings */
+}
+
+.service-box h2 {
+    color: #333333;
+}
+
+.service-box p {
+    color: #666666;
+    font-size: 14px;
+    line-height: 1.6;
+}
