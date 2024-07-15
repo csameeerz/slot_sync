@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAuth } from '../security/AuthContext.jsx';
+import {ReactComponent as HomeImage} from '../assets/home-image/home.svg';
 import './Home.css';
 
 export default function Home() {
@@ -8,18 +9,22 @@ export default function Home() {
     return (
         <div className="home-container">
             <div className="art-animation">
-                {/* Insert your art-related animation or artwork here */}
-                <h1>Welcome to Art Studio</h1>
-                <p>Discover creativity in motion</p>
+                <HomeImage className="home-image" />
+                <div className="show-name">Hi, {authContext.name}</div>
+                <div className="show-tagline">Let's brush up on some artistic skills together</div>
             </div>
             <div className="services-container">
-                <div className="service-box workshops">
+                <div className="service-box bottom-box">
                     <h2>Workshops</h2>
                     <p>Join our creative workshops to learn and explore various art forms.</p>
                 </div>
-                <div className="service-box bookings">
+                <div className="service-box bottom-box">
                     <h2>Bookings</h2>
-                    <p>Book a session with our expert artists for personalized art experiences.</p>
+                    <p>Book a slot for our expert-led workshops for a great experience.</p>
+                </div>
+                <div className="service-box bottom-box">
+                    <h2>Favorites</h2>
+                    <p>Save your favorite workshops here for easy access.</p>
                 </div>
             </div>
         </div>

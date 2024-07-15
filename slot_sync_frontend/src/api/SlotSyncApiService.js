@@ -10,4 +10,10 @@ export const fetchUserByUsername
                 = (username) => apiClient.get(`/api/users/username/${username}`); 
 
 export const verifyUsername
-                = (username) => apiClient.get(`/api/users/verify/username/${username}`); 
+                = (username) => apiClient.get(`/api/users/verify/username/${username}`);
+                
+export const fetchAllSlots
+                = () => apiClient.get(`/api/slots`); 
+
+export const bookSlot
+                = (bookingRequest) => apiClient.post(`/api/bookings`, bookingRequest);

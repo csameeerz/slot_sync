@@ -30,7 +30,7 @@ export default function AuthProvider({ children }) {
                 setToken(response.data.accessToken);
                 setEmail(response.data.email);
                 setId(response.data.id);
-                setName(response.data.name);debugger;
+                setName(response.data.name);
                 setRole(response.data.roles[0]);
                 apiClient.interceptors.request.use(
                     (config) => {

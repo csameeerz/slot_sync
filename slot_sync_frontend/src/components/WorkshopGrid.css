@@ -1,0 +1,47 @@
+/* Ensure the workshop item takes the full available space */
+.workshop-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  width: 100%;
+  height: 100%;
+}
+
+/* Make the workshop item responsive */
+@media (min-width: 600px) {
+  .workshop-item {
+    padding: 30px;
+  }
+}
+
+@media (min-width: 900px) {
+  .workshop-item {
+    padding: 40px;
+  }
+}
+
+/* Ensure the text and list items are styled well */
+.workshop-item h2 {
+  margin-top: 0;
+  font-size: 1.5em;
+}
+
+.workshop-item p {
+  margin: 10px 0;
+  font-size: 1em;
+}
+
+.workshop-item ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.workshop-item ul li {
+  margin: 5px 0;
+  font-size: 0.9em;
+}
