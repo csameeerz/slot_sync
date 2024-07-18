@@ -8,11 +8,15 @@ import com.project.slotsync.request.UpdateSlotRequest;
 import com.project.slotsync.service.SlotService;
 import com.project.slotsync.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -24,13 +28,23 @@ public class SlotController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ApiResponse<Slot>> createNewSlot(@RequestBody CreateSlotRequest request) {
-        ApiResponse<Slot> slot = slotService.createNewSlot(request);
+    public ResponseEntity<ApiResponse<Slot>> createNewSlot(@RequestParam String title,
+                                                           @RequestParam String description,
+                                                           @RequestParam LocalDateTime date,
+                                                           @RequestParam Long duration,
+                                                           @RequestParam Long maxParticipants,
+                                                           @RequestParam("image") MultipartFile image) {
+        ApiResponse<Slot> slot = slotService.createNewSlot(title, description, date, duration, maxParticipants, image);
         if (slot.getData() != null) {
             return ResponseEntity.ok(slot);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(slot);
         }
+    }
+
+    @GetMapping("/view/images/{imageName}")
+    public ResponseEntity<InputStreamResource> viewFile(@PathVariable String imageName) {
+        return slotService.viewImage(imageName);
     }
 
     @PutMapping("/{id}")

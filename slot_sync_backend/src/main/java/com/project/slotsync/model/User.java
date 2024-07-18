@@ -1,6 +1,7 @@
 package com.project.slotsync.model;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -37,6 +38,16 @@ public class User {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+    private Set<Long> favouriteSlotIds = new HashSet<>();
+
+    public Set<Long> getFavouriteSlotIds() {
+        return favouriteSlotIds;
+    }
+
+    public void setFavouriteSlotIds(Set<Long> favouriteSlotIds) {
+        this.favouriteSlotIds = favouriteSlotIds;
+    }
 
     public User() {
     }
@@ -105,6 +116,7 @@ public class User {
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", roles=" + roles +
+                ", favouriteSlotIds=" + favouriteSlotIds +
                 '}';
     }
 }

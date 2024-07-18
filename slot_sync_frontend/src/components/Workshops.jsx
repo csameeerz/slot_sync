@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './Workshops.css';
-import { bookSlot, fetchAllSlots } from '../api/SlotSyncApiService';
+import { bookSlot, fetchAllSlots, addToFavourites } from '../api/SlotSyncApiService'; // Import the new API service
 import WorkshopGrid from './WorkshopGrid';
 import BookModal from './BookModal.jsx';
 import { useAuth } from '../security/AuthContext.jsx';
@@ -100,9 +100,22 @@ export default function Workshops() {
     return average.toFixed(1);
   };
 
-  const handleWorkshopClick = (workshop) => {
+  const handleWorkshopBook = (workshop) => {
     setSelectedWorkshop(workshop);
     setShowModal(true);
+  };
+
+  const handleAddToFavourites = async (workshop) => {
+    try {
+      const favouriteRequest = {
+        slotId: workshop.id,
+      };
+      await addToFavourites(authContext.id, favouriteRequest);
+      alert('Workshop added to favourites!');
+    } catch (error) {
+      console.error('Error adding to favourites:', error);
+      alert('Failed to add workshop to favourites.');
+    }
   };
 
   const handleCloseModal = () => {
@@ -129,7 +142,7 @@ export default function Workshops() {
       <div className="search-bar">
         <input
           type="text"
-          placeholder="Search workshops..."
+          placeholder="Search by Workshop Title"
           value={searchQuery}
           onChange={handleSearch}
         />
@@ -140,7 +153,6 @@ export default function Workshops() {
             key={workshop.id}
             ref={index === displayedWorkshops.length - 1 ? lastWorkshopElementRef : null}
             className="workshop-card"
-            onClick={() => handleWorkshopClick(workshop)} // Add onClick event
           >
             <WorkshopGrid
               key={workshop.id}
@@ -150,7 +162,12 @@ export default function Workshops() {
               duration={workshop.duration}
               rating={calculateAverageRating(workshop.currRating, workshop.noOfRating)}
               availableSlots={workshop.maxParticipants - workshop.currParticipants}
+              imageUrl={workshop.imageUrl}
             />
+            <div className="workshop-buttons">
+              <button onClick={() => handleWorkshopBook(workshop)}>Book</button>
+              <button onClick={() => handleAddToFavourites(workshop)}>Add to Favourites</button>
+            </div>
           </div>
         ))}
         {searchQuery !== '' && displayedWorkshops.length === 0 && (

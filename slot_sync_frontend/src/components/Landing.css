@@ -8,8 +8,9 @@
     text-align: center;
     justify-content: center;
     align-items: center;
+    gap: 30px;
     padding: 0px 20px;
-    height: 80vh;
+    height: 85vh;
     background-color: #f1fbf9;
 }
 

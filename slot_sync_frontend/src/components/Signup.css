@@ -1,17 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
 
-.login-container {
+.login-container-signup {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 80vh;
+    height: 85vh;
+    gap: 30px;
     background-color: #f1fbf9;
     overflow: hidden;
 }
 
-.login-container .failedMessage {
+.login-container-signup .failedMessage {
     margin-top: 15px;
     font-family: "Poppins", sans-serif;
     font-size: 10px;
@@ -20,21 +21,21 @@
     animation: shake 0.5s;
 }
 
-.login-box {
+.login-box-signup {
     position: relative;
     width: 85vw;
-    height: 60vh;
+    height: 65vh;
     border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: center;
+    align-items: center;
     padding: 20px;
     overflow: hidden;
     animation: slideFromRight 0.5s ease-out forwards;
     opacity: 0;
 }
 
-.login-box::before {
+.login-box-signup::before {
     content: "";
     position: absolute;
     top: 0;
@@ -49,22 +50,21 @@
     border-radius: 15px;
 }
 
-.login-box > * {
+.login-box-signup > * {
     position: relative;
     z-index: 1;
 }
 
-.login-form-container {
+.login-form-signup {
     border-radius: 30px;
-    width: 250px;
+    width: 20vw;
     margin: 40px 40px;
-    padding: 10px 40px;
     animation: slideFromLeft 0.5s ease-out forwards;
     opacity: 0;
     align-items: center;
 }
 
-.login-form-container span {
+.login-form-signup span {
     font-family: "Space Grotesk", sans-serif;
     font-weight: 600;
     color: #cc8275;
@@ -79,13 +79,13 @@
     margin-top: 50px;
 }
 
-.form-group {
+.form-field-signup {
     margin-top: 20px;
     margin-bottom: 15px;
 }
 
 input[type="text"], input[type="password"] {
-    width: 90%;
+    width: 100%;
     font-family: "Poppins", sans-serif;
     padding: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -102,10 +102,10 @@ input[type="text"]::placeholder, input[type="password"]::placeholder {
     text-align: center;
 }
 
-.login-button-2 {
+.login-button-next {
     font-size: 1.0rem;
     font-family: "Poppins", sans-serif;
-    padding: 5px 40px;
+    padding: 0.5vh 4.5vw;
     margin-bottom: 20px;
     margin-top: 30px;
     border-radius: 10px;
@@ -117,27 +117,8 @@ input[type="text"]::placeholder, input[type="password"]::placeholder {
     transition: background-color 0.3s, padding 0.3s;
 }
 
-.login-button-2:hover {
-    padding: 5px 90px;
-}
-
-.signup-button {
-    font-size: 1.0rem;
-    font-family: "Poppins", sans-serif;
-    padding: 5px 25px;
-    margin-bottom: 10px;
-    margin-top: 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    color: #f1fbf9;
-    border: 0;
-    background-color: #797976;
-    transform-origin: center;
-    transition: background-color 0.3s, padding 0.3s;
-}
-
-.signup-button:hover {
-    padding: 5px 75px;
+.login-button-next:hover {
+    padding: 0.5vh 7vw;
 }
 
 @keyframes slideFromRight {

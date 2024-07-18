@@ -34,21 +34,19 @@ export default function Login() {
     }
 
     return (
-        <div className="login-container">
+        <div className="login-container-page">
             <div className="login-box">
-                <div className="login-form-container">
+                <div className="login-form">
                     <span>Login</span>
                     <div>
-                        <div className="form-group">
+                        <div className="form-field">
                             <input type="text" id="username" name="username" placeholder="Username" value={username} onChange={handleUsernameChange} />
                         </div>
-                        <div className="form-group">
+                        <div className="form-field">
                             <input type="password" id="password" name="password" placeholder="Password" value={password} onChange={handlePasswordChange} />
                         </div>
-                        <button type="button" className="login-button-2" onClick={goToHomePage}>Sign In</button>
-                    </div>
-                    <div className="signup-link">
-                        <button type="button" className="signup-button" onClick={goToSignupPage}>New User ?</button>
+                        <button type="button" className="login-button-signin" onClick={goToHomePage}>Sign In</button>
+                        <button type="button" className="signup-button-newuser" onClick={goToSignupPage}>Signup</button>
                     </div>
                     {showFailedMessage && <div className="failedMessage">Invalid Credentials</div>}
                 </div>

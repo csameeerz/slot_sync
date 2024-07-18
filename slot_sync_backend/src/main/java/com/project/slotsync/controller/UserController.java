@@ -2,8 +2,10 @@ package com.project.slotsync.controller;
 
 import com.project.slotsync.constants.ApiResponse;
 import com.project.slotsync.model.User;
-import com.project.slotsync.request.ChangeUserPasswordRequest;
+import com.project.slotsync.model.Slot;
+import com.project.slotsync.request.FavouriteRequest;
 import com.project.slotsync.request.UpdateUserRequest;
+import com.project.slotsync.service.SlotService;
 import com.project.slotsync.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/users")
@@ -19,6 +22,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SlotService slotService;
 
     @GetMapping("/id/{id}")
     @PreAuthorize("hasRole('ADMIN')")
@@ -67,6 +73,42 @@ public class UserController {
             return ResponseEntity.ok(user);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(user);
+        }
+    }
+
+    @PutMapping("/id/{id}/favourites")
+    public ResponseEntity<ApiResponse<User>> updateFavouriteSlots(@PathVariable Long id, @RequestBody FavouriteRequest request) {
+        ApiResponse<User> user = userService.updateFavouriteSlots(id, request);
+        if (user.getData() != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(user);
+        }
+    }
+
+    @PutMapping("/id/{id}/favourites/remove")
+    public ResponseEntity<ApiResponse<User>> deleteFromFavouriteSlots(@PathVariable Long id, @RequestBody FavouriteRequest request) {
+        ApiResponse<User> user = userService.deleteFromFavouriteSlots(id, request);
+        if (user.getData() != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(user);
+        }
+    }
+
+    @GetMapping("/id/{id}/favourites")
+    public ResponseEntity<ApiResponse<List<Slot>>> showAllFavouriteSlots(@PathVariable Long id) {
+        ApiResponse<User> user = userService.showUserDetailsById(id);
+        if (user.getData() != null) {
+            Set<Long> favouriteSlotIds = user.getData().getFavouriteSlotIds();
+            ApiResponse<List<Slot>> favouriteSlots = slotService.showAllMatchingSlots(favouriteSlotIds);
+            if (favouriteSlots.getData() != null) {
+                return ResponseEntity.ok(favouriteSlots);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 

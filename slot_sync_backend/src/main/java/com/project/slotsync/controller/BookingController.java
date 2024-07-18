@@ -64,7 +64,7 @@ public class BookingController {
     }
 
     @GetMapping("/users/{id}")
-    @PreAuthorize("hasRole('USER')")
+    //@PreAuthorize("hasRole('USER')")
     public ResponseEntity<ApiResponse<List<Booking>>> showAllBookingsByUser(@PathVariable Long id) {
         ApiResponse<List<Booking>> bookings = bookingService.showAllBookingsByUser(id);
         if (bookings.getData() != null) {

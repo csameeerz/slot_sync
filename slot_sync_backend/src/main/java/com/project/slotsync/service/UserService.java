@@ -4,6 +4,7 @@ import com.project.slotsync.constants.ApiResponse;
 import com.project.slotsync.model.User;
 import com.project.slotsync.repository.UserRepository;
 import com.project.slotsync.request.ChangeUserPasswordRequest;
+import com.project.slotsync.request.FavouriteRequest;
 import com.project.slotsync.request.UpdateUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -70,7 +72,35 @@ public class UserService {
         if (existingUser.isPresent()) {
             User newUser = existingUser.get();
             if (request.getName() != null) newUser.setName(request.getName());
-            if (request.getEmail() != null)newUser.setEmail(request.getEmail());
+            if (request.getEmail() != null) newUser.setEmail(request.getEmail());
+            userRepository.save(newUser);
+            return new ApiResponse<>("User's details updated successfully", newUser);
+        } else {
+            return new ApiResponse<>("No user found to update", null);
+        }
+    }
+
+    public ApiResponse<User> updateFavouriteSlots(Long id, FavouriteRequest request) {
+        Optional<User> existingUser = userRepository.findById(id);
+        if (existingUser.isPresent()) {
+            User newUser = existingUser.get();
+            Set<Long> newFavouriteSlotIds = newUser.getFavouriteSlotIds();
+            newFavouriteSlotIds.add(request.getSlotId());
+            newUser.setFavouriteSlotIds(newFavouriteSlotIds);
+            userRepository.save(newUser);
+            return new ApiResponse<>("User's details updated successfully", newUser);
+        } else {
+            return new ApiResponse<>("No user found to update", null);
+        }
+    }
+
+    public ApiResponse<User> deleteFromFavouriteSlots(Long id, FavouriteRequest request) {
+        Optional<User> existingUser = userRepository.findById(id);
+        if (existingUser.isPresent()) {
+            User newUser = existingUser.get();
+            Set<Long> newFavouriteSlotIds = newUser.getFavouriteSlotIds();
+            newFavouriteSlotIds.remove(request.getSlotId());
+            newUser.setFavouriteSlotIds(newFavouriteSlotIds);
             userRepository.save(newUser);
             return new ApiResponse<>("User's details updated successfully", newUser);
         } else {

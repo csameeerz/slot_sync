@@ -110,12 +110,12 @@ export default function Signup() {
     }
 
     return (
-        <div className="login-container">
-            <div className="login-box">
-                <div className="login-form-container">
+        <div className="login-container-signup">
+            <div className="login-box-signup">
+                <div className="login-form-signup">
                     <span>Create Account</span>
                     <div>
-                        <div className="form-group">
+                        <div className="form-field-signup">
                             {
                                 showQuestion1
                                 &&
@@ -151,7 +151,7 @@ export default function Signup() {
                                 </div>
                             }
                         </div>
-                        <button type="button" className="login-button-2" onClick={handleNext}>Next</button>
+                        <button type="button" className="login-button-next" onClick={handleNext}>Next</button>
                         {showFailedMessage && <div className="failedMessage">Username already exists, Please try again</div>}
                         {errorMessage && <div className="failedMessage">{errorMessage}</div>}
                     </div>

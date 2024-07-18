@@ -34,11 +34,21 @@ public class Slot {
 
     private Long noOfRatings;
 
+    private String imageUrl;
+
     public Slot() {
 
     }
 
-    public Slot(Long noOfRatings, Double currRating, Long currParticipants, LocalDateTime date, String description, Long duration, Long maxParticipants, String title) {
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public Slot(Long noOfRatings, Double currRating, Long currParticipants, LocalDateTime date, String description, Long duration, Long maxParticipants, String title, String imageUrl) {
         this.noOfRatings = noOfRatings;
         this.currRating = currRating;
         this.currParticipants = currParticipants;
@@ -47,6 +57,7 @@ public class Slot {
         this.duration = duration;
         this.maxParticipants = maxParticipants;
         this.title = title;
+        this.imageUrl = imageUrl;
     }
 
     public Long getCurrParticipants() {

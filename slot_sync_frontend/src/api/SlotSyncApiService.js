@@ -17,3 +17,21 @@ export const fetchAllSlots
 
 export const bookSlot
                 = (bookingRequest) => apiClient.post(`/api/bookings`, bookingRequest);
+
+export const getBookedSlotsByUser
+                = (userId) => apiClient.get(`/api/bookings/users/${userId}`);
+
+export const addToFavourites
+                = (userId, favouriteRequest) => apiClient.put(`/api/users/id/${userId}/favourites`, favouriteRequest);
+
+export const showFavourites
+                = (userId) => apiClient.get(`/api/users/id/${userId}/favourites`);
+
+export const deleteFromFavourites
+                = (userId, favouriteRequest) => apiClient.put(`/api/users/id/${userId}/favourites/remove`, favouriteRequest);
+
+
+export const getSlotImage
+                = (imageName) => apiClient.get(`/api/slots/view/images/${imageName}`, {
+                    responseType: 'arraybuffer',
+                });
