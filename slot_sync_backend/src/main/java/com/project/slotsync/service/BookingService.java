@@ -35,8 +35,14 @@ public class BookingService {
         Slot slot = slotRepository.findById(request.getSlotId()).orElse(null);
 
         if (user != null && slot != null) {
-            Booking booking = bookingRepository.save(new Booking(LocalDateTime.now(), request.getSlotId(), BookingStatus.CONFIRMED, request.getUserId()));
-            return new ApiResponse<>("Booked slot successfully", booking);
+            if (slot.getMaxParticipants() - slot.getCurrParticipants() > 0) {
+                Booking booking = bookingRepository.save(new Booking(LocalDateTime.now(), request.getSlotId(), BookingStatus.CONFIRMED, request.getUserId(), request.getUsername(), request.getSlotTitle(), request.getSlotDescription()));
+                slot.setCurrParticipants(slot.getCurrParticipants() + 1);
+                slotRepository.save(slot);
+                return new ApiResponse<>("Booked slot successfully", booking);
+            } else {
+                return new ApiResponse<>("No more bookings allowed", null);
+            }
         } else {
             return new ApiResponse<>("Invalid slot or user", null);
         }
@@ -62,7 +68,7 @@ public class BookingService {
                 return new ApiResponse<>("Provide status to change", null);
             }
         } else {
-            return new ApiResponse<>("No slot found to update", null);
+            return new ApiResponse<>("No booking found to update", null);
         }
     }
 
@@ -90,6 +96,15 @@ public class BookingService {
             return new ApiResponse<>("No bookings found", null);
         } else {
             return new ApiResponse<>("Bookings' details fetched successfully", allBookings);
+        }
+    }
+
+    public ApiResponse<String> deleteExistingBooking(Long id) {
+        if (bookingRepository.existsById(id)) {
+            bookingRepository.deleteById(id);
+            return new ApiResponse<>("Booking deleted successfully", "Deleted Booking Id: " + id);
+        } else {
+            return new ApiResponse<>("No booking found to delete", null);
         }
     }
 }

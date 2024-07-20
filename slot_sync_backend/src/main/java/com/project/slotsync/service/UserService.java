@@ -22,12 +22,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-//    @Autowired
-//    PasswordEncoder encoder;
-
     public ApiResponse<User> showUserDetailsById(Long id) {
         Optional<User> user = userRepository.findById(id);
-
         if (user.isPresent()) {
             return new ApiResponse<>("User's details fetched successfully", user.get());
         }
@@ -38,7 +34,6 @@ public class UserService {
 
     public ApiResponse<User> showUserDetailsByUsername(String username) {
         Optional<User> user = userRepository.findByUsername(username);
-
         if (user.isPresent()) {
             return new ApiResponse<>("User's details fetched successfully", user.get());
         }
@@ -49,7 +44,6 @@ public class UserService {
 
     public ApiResponse<String> verifyUsername(String username) {
         Optional<User> user = userRepository.findByUsername(username);
-
         if (user.isPresent()) {
             return new ApiResponse<>("User found", user.get().getUsername());
         }
@@ -108,20 +102,13 @@ public class UserService {
         }
     }
 
-//    public ApiResponse<User> changePassword(String username, ChangeUserPasswordRequest request) {
-//        Optional<User> existingUser = userRepository.findByUsername(username);
-//        if (existingUser.isPresent()) {
-//            User newUser = existingUser.get();
-//            if (encoder.encode(request.getCurrentPassword()).equals(newUser.getPassword())) {
-//                newUser.setName(encoder.encode(request.getNewPassword()));
-//                userRepository.save(newUser);
-//                return new ApiResponse<>("User's details updated successfully", newUser);
-//            } else {
-//                return new ApiResponse<>("Incorrect current password", null);
-//            }
-//
-//        } else {
-//            return new ApiResponse<>("No users found to update", null);
-//        }
-//    }
+    public ApiResponse<Void> deleteUserById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            userRepository.deleteById(id);
+            return new ApiResponse<>("User deleted successfully", null);
+        } else {
+            return new ApiResponse<>("No user found", null);
+        }
+    }
 }

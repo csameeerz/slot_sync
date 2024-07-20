@@ -10,10 +10,10 @@ export default function BookModal({ show, handleClose, handleConfirm }) {
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <p>Are you sure you want to book this slot?</p>
+        <p>Are you sure you want to book this slot ?</p>
         <div className="modal-buttons">
-          <button onClick={handleConfirm}>Yes</button>
-          <button onClick={handleClose}>No</button>
+          <button onClick={handleConfirm} className='popup-button'>Yes</button>
+          <button onClick={handleClose} className='popup-button'>No</button>
         </div>
       </div>
     </div>

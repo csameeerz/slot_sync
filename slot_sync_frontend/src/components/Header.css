@@ -7,7 +7,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    height: 7.5vh;
+    min-height: 7.5vh;
     background-color: #f1fbf9;
 }
 

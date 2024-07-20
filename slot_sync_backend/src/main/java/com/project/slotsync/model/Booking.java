@@ -23,15 +23,48 @@ public class Booking {
 
     private BookingStatus status;
 
+    private String username;
+
+    private String slotTitle;
+
+    private String slotDescription;
+
+    public String getSlotDescription() {
+        return slotDescription;
+    }
+
+    public void setSlotDescription(String slotDescription) {
+        this.slotDescription = slotDescription;
+    }
+
+    public String getSlotTitle() {
+        return slotTitle;
+    }
+
+    public void setSlotTitle(String slotTitle) {
+        this.slotTitle = slotTitle;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public Booking() {
 
     }
 
-    public Booking(LocalDateTime date, Long slotId, BookingStatus status, Long userId) {
+    public Booking(LocalDateTime date, Long slotId, BookingStatus status, Long userId, String username, String slotTitle, String slotDescription) {
         this.date = date;
         this.slotId = slotId;
         this.status = status;
         this.userId = userId;
+        this.username = username;
+        this.slotTitle = slotTitle;
+        this.slotDescription = slotDescription;
     }
 
     public Long getId() {
@@ -77,11 +110,14 @@ public class Booking {
     @Override
     public String toString() {
         return "Booking{" +
-                "id=" + id +
+                "date=" + date +
+                ", id=" + id +
                 ", slotId=" + slotId +
                 ", userId=" + userId +
-                ", date=" + date +
                 ", status=" + status +
+                ", username='" + username + '\'' +
+                ", slotTitle='" + slotTitle + '\'' +
+                ", slotDescription='" + slotDescription + '\'' +
                 '}';
     }
 }

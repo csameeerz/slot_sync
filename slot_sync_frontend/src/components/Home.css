@@ -6,7 +6,7 @@
     background-color: #f1fbf9;
     padding: 10px 50px;
     text-align: center;
-    height: 85vh;
+    min-height: 85vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -37,7 +37,7 @@
 }
 
 .art-animation .show-name {
-    color: #ae7244;
+    color: #cc8275;
     font-size: 28px;
     font-family: "Space Grotesk", sans-serif;
     font-weight: bold;

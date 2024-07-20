@@ -15,6 +15,9 @@ export const verifyUsername
 export const fetchAllSlots
                 = () => apiClient.get(`/api/slots`); 
 
+export const rateSlotById
+                = (slotId, ratingRequest) => apiClient.put(`/api/slots/rating/${slotId}`, ratingRequest); 
+
 export const bookSlot
                 = (bookingRequest) => apiClient.post(`/api/bookings`, bookingRequest);
 
@@ -30,8 +33,15 @@ export const showFavourites
 export const deleteFromFavourites
                 = (userId, favouriteRequest) => apiClient.put(`/api/users/id/${userId}/favourites/remove`, favouriteRequest);
 
-
 export const getSlotImage
                 = (imageName) => apiClient.get(`/api/slots/view/images/${imageName}`, {
                     responseType: 'arraybuffer',
                 });
+
+export const getSlotImageById
+                = (slotId) => apiClient.get(`/api/slots/view/images/id/${slotId}`, {
+                    responseType: 'arraybuffer',
+                });
+
+export const changeBookingStatus
+                = (bookingId, statusRequest) => apiClient.put(`/api/bookings/${bookingId}`, statusRequest);

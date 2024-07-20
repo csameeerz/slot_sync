@@ -4,6 +4,7 @@ import com.project.slotsync.constants.ApiResponse;
 import com.project.slotsync.model.Slot;
 import com.project.slotsync.model.User;
 import com.project.slotsync.request.CreateSlotRequest;
+import com.project.slotsync.request.RatingRequest;
 import com.project.slotsync.request.UpdateSlotRequest;
 import com.project.slotsync.service.SlotService;
 import com.project.slotsync.service.UserService;
@@ -28,12 +29,7 @@ public class SlotController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ApiResponse<Slot>> createNewSlot(@RequestParam String title,
-                                                           @RequestParam String description,
-                                                           @RequestParam LocalDateTime date,
-                                                           @RequestParam Long duration,
-                                                           @RequestParam Long maxParticipants,
-                                                           @RequestParam("image") MultipartFile image) {
+    public ResponseEntity<ApiResponse<Slot>> createNewSlot(@RequestParam String title, @RequestParam String description, @RequestParam LocalDateTime date, @RequestParam Long duration, @RequestParam Long maxParticipants, @RequestParam("image") MultipartFile image) {
         ApiResponse<Slot> slot = slotService.createNewSlot(title, description, date, duration, maxParticipants, image);
         if (slot.getData() != null) {
             return ResponseEntity.ok(slot);
@@ -43,8 +39,14 @@ public class SlotController {
     }
 
     @GetMapping("/view/images/{imageName}")
-    public ResponseEntity<InputStreamResource> viewFile(@PathVariable String imageName) {
-        return slotService.viewImage(imageName);
+    public ResponseEntity<InputStreamResource> viewSlotImage(@PathVariable String imageName) {
+        return slotService.viewSlotImage(imageName);
+    }
+
+    @GetMapping("/view/images/id/{id}")
+    public ResponseEntity<InputStreamResource> viewSlotImageById(@PathVariable Long id) {
+        ApiResponse<Slot> slot = slotService.showExistingSlot(id);
+        return slotService.viewSlotImage(slot.getData().getImageUrl());
     }
 
     @PutMapping("/{id}")
@@ -89,14 +91,10 @@ public class SlotController {
         }
     }
 
-//    @GetMapping
-//    public ApiResponse<List<Slot>> searchExistingSlots() {
-//        return null;
-//    }
-
     @PutMapping("/rating/{id}")
-    public ResponseEntity<ApiResponse<String>> rateExistingSlot(@PathVariable Long id, @RequestParam Double rating) {
-        ApiResponse<String> slot = slotService.rateExistingSlot(id, rating);
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<ApiResponse<String>> rateExistingSlot(@PathVariable Long id, @RequestBody RatingRequest request) {
+        ApiResponse<String> slot = slotService.rateExistingSlot(id, Double.valueOf(request.getRating()));
         if (slot.getData() != null) {
             return ResponseEntity.ok(slot);
         } else {

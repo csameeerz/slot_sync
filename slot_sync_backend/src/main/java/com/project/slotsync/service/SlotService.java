@@ -30,12 +30,7 @@ public class SlotService {
     @Autowired
     private ImageFileService imageFileService;
 
-    public ApiResponse<Slot> createNewSlot(String title,
-                                           String description,
-                                           LocalDateTime date,
-                                           Long duration,
-                                           Long maxParticipants,
-                                           MultipartFile image) {
+    public ApiResponse<Slot> createNewSlot(String title, String description, LocalDateTime date, Long duration, Long maxParticipants, MultipartFile image) {
         try {
             String originalFilename = image.getOriginalFilename();
             String imageName = UUID.randomUUID().toString() + "_" + originalFilename;
@@ -47,7 +42,7 @@ public class SlotService {
         }
     }
 
-    public ResponseEntity<InputStreamResource> viewImage(@PathVariable String imageName) {
+    public ResponseEntity<InputStreamResource> viewSlotImage(@PathVariable String imageName) {
         var s3Object = imageFileService.getFile(imageName);
         var content = s3Object.getObjectContent();
 
@@ -97,7 +92,6 @@ public class SlotService {
 
     public ApiResponse<Slot> showExistingSlot(Long id) {
         Optional<Slot> slot = slotRepository.findById(id);
-
         if (slot.isPresent()) {
             return new ApiResponse<>("Slot's details fetched successfully", slot.get());
         }
@@ -117,7 +111,6 @@ public class SlotService {
 
     public ApiResponse<String> rateExistingSlot(Long id, Double rating) {
         Optional<Slot> slot = slotRepository.findById(id);
-
         if (slot.isPresent()) {
             Slot newSlot = slot.get();
             newSlot.setNoOfRatings(newSlot.getNoOfRatings() + 1);

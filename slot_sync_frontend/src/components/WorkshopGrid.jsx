@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './WorkshopGrid.css'; // Import CSS for styling
 import { getSlotImage } from '../api/SlotSyncApiService.js';
+import starIcon from '../assets/icons/star.svg';
 
-const WorkshopGrid = ({ title, description, date, time, duration, rating, availableSlots, imageUrl }) => {
+const WorkshopGrid = ({ title, description, date, time, duration, noOfRatings, rating, availableSlots, imageUrl }) => {
   const [image, setImage] = useState(''); // Initialize with ''
 
   useEffect(() => {
@@ -21,21 +22,20 @@ const WorkshopGrid = ({ title, description, date, time, duration, rating, availa
   }, [imageUrl]);
 
   return (
-    <div className="workshop-item">
-      <div className="workshop-image-container">
-        <img src={image} alt={title} className="workshop-image" />
+    <div className="workshop-item" style={{ backgroundImage: `url(${image})` }}>
         <div className="overlay">
-          <h2>{title}</h2>
-          <p>{description}</p>
-          <ul>
-            <li>Date: {date}</li>
-            <li>Time: {time}</li>
-            <li>Duration: {duration}</li>
-            <li>Rating: {rating}</li>
-            <li>Available Slots: {availableSlots}</li>
-          </ul>
+          <div className="overlay-inside-box">
+            <h2>{title}</h2>
+            <p>{description}</p>
+            <ul>
+              <li>{date} at {time}</li>
+              <li>{duration} minutes workshop</li>
+              <li>{availableSlots} more slots available</li>
+            </ul>
+            <img src={starIcon} className='star-icon'/>
+            <div className='rating-text'>{rating}</div>
+          </div>
         </div>
-      </div>
     </div>
   );
 };

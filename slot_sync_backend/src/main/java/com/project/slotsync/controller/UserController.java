@@ -77,6 +77,7 @@ public class UserController {
     }
 
     @PutMapping("/id/{id}/favourites")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ApiResponse<User>> updateFavouriteSlots(@PathVariable Long id, @RequestBody FavouriteRequest request) {
         ApiResponse<User> user = userService.updateFavouriteSlots(id, request);
         if (user.getData() != null) {
@@ -87,6 +88,7 @@ public class UserController {
     }
 
     @PutMapping("/id/{id}/favourites/remove")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ApiResponse<User>> deleteFromFavouriteSlots(@PathVariable Long id, @RequestBody FavouriteRequest request) {
         ApiResponse<User> user = userService.deleteFromFavouriteSlots(id, request);
         if (user.getData() != null) {
@@ -97,6 +99,7 @@ public class UserController {
     }
 
     @GetMapping("/id/{id}/favourites")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ApiResponse<List<Slot>>> showAllFavouriteSlots(@PathVariable Long id) {
         ApiResponse<User> user = userService.showUserDetailsById(id);
         if (user.getData() != null) {
@@ -112,8 +115,14 @@ public class UserController {
         }
     }
 
-//    @PutMapping("/{username}/change-password")
-//    public ApiResponse<User> changePassword(@PathVariable String username, @RequestBody ChangeUserPasswordRequest request) {
-//        return userService.changePassword(username, request);
-//    }
+    @DeleteMapping("/id/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<Void>> deleteUserById(@PathVariable Long id) {
+        ApiResponse<Void> response = userService.deleteUserById(id);
+        if (response.getMessage().equals("User deleted successfully")) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+    }
 }
