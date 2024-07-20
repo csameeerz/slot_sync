@@ -2,7 +2,9 @@ package com.project.slotsync.service;
 
 import com.project.slotsync.constants.ApiResponse;
 import com.project.slotsync.model.Slot;
+import com.project.slotsync.model.User;
 import com.project.slotsync.repository.SlotRepository;
+import com.project.slotsync.repository.UserRepository;
 import com.project.slotsync.request.UpdateSlotRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -16,16 +18,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class SlotService {
 
     @Autowired
     private SlotRepository slotRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private ImageFileService imageFileService;
@@ -63,8 +65,10 @@ public class SlotService {
         Optional<Slot> existingSlot = slotRepository.findById(id);
         if (existingSlot.isPresent()) {
             Slot newSlot = existingSlot.get();
+            if (request.getTitle() != null) newSlot.setTitle(request.getTitle());
             if (request.getDescription() != null) newSlot.setDescription(request.getDescription());
             if (request.getMaxParticipants() != null) newSlot.setMaxParticipants(request.getMaxParticipants());
+            if (request.getDuration() != null) newSlot.setDuration(request.getDuration());
             slotRepository.save(newSlot);
             return new ApiResponse<>("Slot's details updated successfully", newSlot);
         } else {
@@ -88,6 +92,11 @@ public class SlotService {
         } else {
             return new ApiResponse<>("Slots' details fetched successfully", allSlots);
         }
+    }
+
+    public ApiResponse<Long> showAllSlotsCount() {
+        Long count = slotRepository.count();
+        return new ApiResponse<>("Slots' count successful", count);
     }
 
     public ApiResponse<Slot> showExistingSlot(Long id) {
@@ -122,5 +131,46 @@ public class SlotService {
         else {
             return new ApiResponse<>("No slot found", null);
         }
+    }
+
+    public ApiResponse<Long> getMostFrequentSlotId() {
+        List<User> users = userRepository.findAll();
+        Map<Long, Integer> slotFrequencyMap = new HashMap<>();
+
+        for (User user : users) {
+            Set<Long> favouriteSlotIds = user.getFavouriteSlotIds();
+            for (Long slotId : favouriteSlotIds) {
+                slotFrequencyMap.put(slotId, slotFrequencyMap.getOrDefault(slotId, 0) + 1);
+            }
+        }
+
+        Long mostFrequentSlotId = null;
+        int maxFrequency = 0;
+
+        for (Map.Entry<Long, Integer> entry : slotFrequencyMap.entrySet()) {
+            if (entry.getValue() > maxFrequency) {
+                mostFrequentSlotId = entry.getKey();
+                maxFrequency = entry.getValue();
+            }
+        }
+
+        return new ApiResponse<>("Most liked slot found successfully", mostFrequentSlotId);
+    }
+
+    public ApiResponse<Slot> getHighestRatedSlot() {
+        List<Slot> slots = slotRepository.findAll();
+        Slot highestRatedSlot = null;
+        double highestRating = 0.0;
+
+        for (Slot slot : slots) {
+            double rating = slot.getNoOfRatings() > 0 ? slot.getCurrRating() / slot.getNoOfRatings() : 0.0;
+            if (highestRatedSlot == null || rating > highestRating ||
+                    (rating == highestRating && slot.getNoOfRatings() > highestRatedSlot.getNoOfRatings())) {
+                highestRatedSlot = slot;
+                highestRating = rating;
+            }
+        }
+
+        return new ApiResponse<>("Most rated slot found successfully", highestRatedSlot);
     }
 }

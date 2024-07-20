@@ -81,6 +81,17 @@ public class SlotController {
         }
     }
 
+    @GetMapping("/count")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<Long>> showAllSlotsCount() {
+        ApiResponse<Long> count = slotService.showAllSlotsCount();
+        if (count.getData() != null) {
+            return ResponseEntity.ok(count);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(count);
+        }
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Slot>> showExistingSlot(@PathVariable Long id) {
         ApiResponse<Slot> slot = slotService.showExistingSlot(id);
@@ -99,6 +110,29 @@ public class SlotController {
             return ResponseEntity.ok(slot);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(slot);
+        }
+    }
+
+    @GetMapping("/most-liked")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> getMostLikedSlot() {
+        ApiResponse<Long> slotId = slotService.getMostFrequentSlotId();
+        if (slotId.getData() != null) {
+            ApiResponse<Slot> slot = slotService.showExistingSlot(slotId.getData());
+            return ResponseEntity.ok(slot.getData().getTitle());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @GetMapping("/most-rated")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> getMostRatedSlot() {
+        ApiResponse<Slot> slot = slotService.getHighestRatedSlot();
+        if (slot.getData() != null) {
+            return ResponseEntity.ok(slot.getData().getTitle());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 }

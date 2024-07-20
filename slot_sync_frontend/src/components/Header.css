@@ -76,10 +76,11 @@
 .header-right {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
 }
 
 .profile-icon {
+    margin-top: 5px;
     height: 30px;
     width: 30px;
     transition: transform 0.3s ease; 

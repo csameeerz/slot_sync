@@ -65,6 +65,17 @@ public class UserController {
         }
     }
 
+    @GetMapping("/count")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<Long>> showAllUsersCount() {
+        ApiResponse<Long> count = userService.showAllUsersCount();
+        if (count.getData() != null) {
+            return ResponseEntity.ok(count);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(count);
+        }
+    }
+
     @PutMapping("/{username}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ApiResponse<User>> updateExistingUserDetails(@PathVariable String username, @RequestBody UpdateUserRequest request) {

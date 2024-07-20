@@ -24,9 +24,14 @@ export default function Login() {
     }
 
     async function goToHomePage() {
-        if (await authContext.login(username, password)) {
+        const role = await authContext.login(username, password);
+        if (role) {
             setShowFailedMessage(false);
-            navigate(`/home`);
+            if (role === 'ROLE_USER') {
+                navigate(`/home`);
+            } else {
+                navigate(`/home-admin`);
+            }
         } else {
             setShowFailedMessage(false);
             setTimeout(() => setShowFailedMessage(true), 0);
@@ -45,8 +50,10 @@ export default function Login() {
                         <div className="form-field">
                             <input type="password" id="password" name="password" placeholder="Password" value={password} onChange={handlePasswordChange} />
                         </div>
-                        <button type="button" className="login-button-signin" onClick={goToHomePage}>Sign In</button>
-                        <button type="button" className="signup-button-newuser" onClick={goToSignupPage}>Signup</button>
+                        <div className='signin-signup'>
+                            <button type="button" className="login-button-signin" onClick={goToHomePage}>Sign In</button>
+                            <button type="button" className="signup-button-newuser" onClick={goToSignupPage}>Signup</button>
+                        </div>
                     </div>
                     {showFailedMessage && <div className="failedMessage">Invalid Credentials</div>}
                 </div>

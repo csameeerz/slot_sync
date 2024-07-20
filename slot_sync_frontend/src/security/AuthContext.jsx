@@ -38,10 +38,10 @@ export default function AuthProvider({ children }) {
                         return config;
                     }
                 )
-                return true;
+                return response.data.roles[0];
             } else {
                 logout();
-                return false;
+                return null;
         }
         } catch(error) {
             logout();

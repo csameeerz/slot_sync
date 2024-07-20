@@ -34,10 +34,10 @@ export default function Header() {
                 )}
                 {authContext.isLoggedIn && authContext.role === 'ROLE_ADMIN' && (
                     <>
-                        <a href="#home" className="nav-link">Home</a>
-                        <a href="#workshops" className="nav-link">Workshops</a>
-                        <a href="#bookings" className="nav-link">Bookings</a>
-                        <a href="#dashboard" className="nav-link">Dashboard</a>
+                        <Link to="/home-admin" className="nav-link">Home</Link>
+                        <Link to="/workshops-admin" className="nav-link">Workshops</Link>
+                        <Link to="/bookings-admin" className="nav-link">Bookings</Link>
+                        <Link to="/dashboard-admin" className="nav-link">Dashboard</Link>
                     </>
                 )}
             </nav>

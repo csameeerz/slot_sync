@@ -75,6 +75,7 @@
 }
 
 .add-favorite-icon {
+  cursor: pointer;
   width: 30px;
   height: 30px;
   transition: height 0.2s, width 0.2s;

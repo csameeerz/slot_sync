@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import './Workshops.css';
-import { bookSlot, fetchAllSlots, addToFavourites } from '../api/SlotSyncApiService'; // Import the new API service
+import './WorkshopsAdmin.css';
+import { fetchAllSlots, deleteWorkshop } from '../api/SlotSyncApiService'; // Import the new API services
 import WorkshopGrid from './WorkshopGrid';
-import BookModal from './BookModal.jsx';
+import EditModal from './EditModal.jsx';
 import ConfirmationModal from './ConfirmationModal.jsx';
-import { useAuth } from '../security/AuthContext.jsx';
-import heartIcon from '../assets/icons/heart.svg';
+import CreateModal from './CreateModal.jsx';
+import deleteIcon from '../assets/icons/delete.svg';
 
-export default function Workshops() {
-  const authContext = useAuth();
+export default function WorkshopsAdmin() {
   const [searchQuery, setSearchQuery] = useState('');
   const [workshops, setWorkshops] = useState([]);
   const [displayedWorkshops, setDisplayedWorkshops] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedWorkshop, setSelectedWorkshop] = useState(null);
   const [confirmationMessage, setConfirmationMessage] = useState('');
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
@@ -23,10 +23,10 @@ export default function Workshops() {
   const fetchWorkshops = async () => {
     try {
       const response = await fetchAllSlots();
-      const data = await response.data.data.sort((a, b) => a.id - b.id); // Sort by id
+      const data = await response.data.data.sort((a, b) => a.id - b.id);
       setWorkshops(data);
       setDisplayedWorkshops(data.slice(0, 6));
-      setPage(1); // Reset page to 1
+      setPage(1);
       if (data.length <= 6) {
         setHasMore(false);
       } else {
@@ -91,77 +91,36 @@ export default function Workshops() {
     }
   }, [page, workshops, searchQuery]);
 
-  const formatDate = (dateTimeString) => {
-    const dateTime = new Date(dateTimeString);
-    const date = dateTime.toLocaleDateString('en-GB', {
-      day: 'numeric',
-      month: 'numeric',
-      year: 'numeric',
-    });
-    return `${date}`;
-  };
-
-  const formatTime = (dateTimeString) => {
-    const dateTime = new Date(dateTimeString);
-    const time = dateTime.toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true
-    });
-    return `${time}`;
-  };
-
-  const calculateAverageRating = (currRating, noOfRatings) => {
-    if (noOfRatings === 0) return 0;
-    const average = currRating / noOfRatings;
-    return average.toFixed(1);
-  };
-
-  const handleWorkshopBook = (workshop) => {
+  const handleEditClick = (workshop) => {
     setSelectedWorkshop(workshop);
-    setShowModal(true);
+    setShowEditModal(true);
   };
 
-  const handleAddToFavourites = async (workshop) => {
+  const handleCreateClick = () => {
+    setShowCreateModal(true);
+  };
+
+  const handleDelete = async (workshopId) => {
     try {
-      const favouriteRequest = {
-        slotId: workshop.id,
-      };
-      await addToFavourites(authContext.id, favouriteRequest);
-      setConfirmationMessage('Workshop added to Favourites');
+      await deleteWorkshop(workshopId);
+      setConfirmationMessage('Workshop deleted successfully');
       setShowConfirmationModal(true);
+      fetchWorkshops();
     } catch (error) {
-      console.error('Error adding to favourites:', error);
-      setConfirmationMessage('Failed to add workshop to Favourites');
+      console.error('Error deleting workshop:', error);
+      setConfirmationMessage('Failed to delete the workshop');
       setShowConfirmationModal(true);
     }
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
+  const handleCloseEditModal = () => {
+    fetchWorkshops();
+    setShowEditModal(false);
   };
 
-  const handleConfirmModal = async () => {
-    try {
-      const bookingRequest = {
-        userId: authContext.id,
-        slotId: selectedWorkshop.id,
-        username: authContext.username,
-        slotTitle: selectedWorkshop.title,
-        slotDescription: selectedWorkshop.description
-      };
-      await bookSlot(bookingRequest);
-      setShowModal(false);
-      setConfirmationMessage('Workshop booked successfully');
-      setShowConfirmationModal(true);
-      await fetchWorkshops(); // Refresh the list after successful booking
-      setPage(1); // Reset page to 1 after fetching new workshops
-    } catch (error) {
-      console.error('Error confirming workshop:', error);
-      setConfirmationMessage('Failed to book the workshop');
-      setShowModal(false);
-      setShowConfirmationModal(true);
-    }
+  const handleCloseCreateModal = () => {
+    fetchWorkshops();
+    setShowCreateModal(false);
   };
 
   const handleCloseConfirmationModal = () => {
@@ -169,48 +128,50 @@ export default function Workshops() {
   };
 
   return (
-    <div className="workshops-container">
-      <div className="search-bar">
+    <div className="admin-container">
+      <div className="admin-search-bar">
         <input
           type="text"
           placeholder="Search by Workshop Title"
-          className="search-here"
+          className="admin-search-input"
           value={searchQuery}
           onChange={handleSearch}
         />
+        <button className="create-button" onClick={handleCreateClick}>Create New Workshop</button>
       </div>
-      <div className="workshops-grid">
+      <div className="admin-workshops-grid">
         {displayedWorkshops.map((workshop, index) => (
           <div
             key={workshop.id}
             ref={index === displayedWorkshops.length - 1 ? lastWorkshopElementRef : null}
-            className="workshop-card"
+            className="admin-workshop-card"
           >
             <WorkshopGrid
               key={workshop.id}
               title={workshop.title}
               description={workshop.description}
-              date={formatDate(workshop.date)}
-              time={formatTime(workshop.date)}
+              date={new Date(workshop.date).toLocaleDateString('en-GB')}
+              time={new Date(workshop.date).toLocaleTimeString('en-US')}
               duration={workshop.duration}
               noOfRatings={workshop.noOfRatings}
-              rating={calculateAverageRating(workshop.currRating, workshop.noOfRatings)}
+              rating={workshop.currRating / workshop.noOfRatings}
               availableSlots={workshop.maxParticipants - workshop.currParticipants}
               imageUrl={workshop.imageUrl}
             />
-            <div className="workshop-buttons">
-              <button className="book-button" onClick={() => handleWorkshopBook(workshop)}>Book</button>
-              <img src={heartIcon} className="add-favorite-icon" onClick={() => handleAddToFavourites(workshop)} />
+            <div className="admin-workshop-buttons">
+              <button className="edit-button" onClick={() => handleEditClick(workshop)}>Edit</button>
+              <img src={deleteIcon} className="delete-icon" onClick={() => handleDelete(workshop.id)} />
             </div>
           </div>
         ))}
         {searchQuery !== '' && displayedWorkshops.length === 0 && (
-          <div className="no-results">
+          <div className="admin-no-results">
             <p>No workshops found "{searchQuery}"</p>
           </div>
         )}
       </div>
-      <BookModal show={showModal} handleClose={handleCloseModal} handleConfirm={handleConfirmModal} />
+      <EditModal show={showEditModal} handleClose={handleCloseEditModal} workshop={selectedWorkshop} />
+      <CreateModal show={showCreateModal} handleClose={handleCloseCreateModal} />
       <ConfirmationModal show={showConfirmationModal} message={confirmationMessage} handleClose={handleCloseConfirmationModal} />
       <div className="footer-space" />
     </div>

@@ -138,3 +138,9 @@
     padding: 0.5rem 3.5rem;
     color: white;
 }
+
+.status-button.confirmed-2 {
+    background-color: #5b6f7e;
+    padding: 0.5rem 3.5rem;
+    color: white;
+}

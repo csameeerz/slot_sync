@@ -2,9 +2,11 @@ package com.project.slotsync.controller;
 
 import com.project.slotsync.constants.ApiResponse;
 import com.project.slotsync.model.Booking;
+import com.project.slotsync.model.Slot;
 import com.project.slotsync.request.CreateBookingRequest;
 import com.project.slotsync.request.StatusRequest;
 import com.project.slotsync.service.BookingService;
+import com.project.slotsync.service.SlotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,9 @@ public class BookingController {
 
     @Autowired
     public BookingService bookingService;
+
+    @Autowired
+    private SlotService slotService;
 
     @PostMapping
     @PreAuthorize("hasRole('USER')")
@@ -57,6 +62,17 @@ public class BookingController {
         }
     }
 
+    @GetMapping("/count")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<Long>> showAllBookingsCount() {
+        ApiResponse<Long> count = bookingService.showAllBookingsCount();
+        if (count.getData() != null) {
+            return ResponseEntity.ok(count);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(count);
+        }
+    }
+
     @GetMapping("/slots/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<List<Booking>>> showAllBookingsForSlot(@PathVariable Long id) {
@@ -87,6 +103,18 @@ public class BookingController {
             return ResponseEntity.ok(booking);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(booking);
+        }
+    }
+
+    @GetMapping("/most-booked")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> getMostLikedSlot() {
+        ApiResponse<Long> slotId = bookingService.getMostBookedSlotId();
+        if (slotId.getData() != null) {
+            ApiResponse<Slot> slot = slotService.showExistingSlot(slotId.getData());
+            return ResponseEntity.ok(slot.getData().getTitle());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 }

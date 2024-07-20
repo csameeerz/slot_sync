@@ -15,8 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class BookingService {
@@ -99,6 +98,11 @@ public class BookingService {
         }
     }
 
+    public ApiResponse<Long> showAllBookingsCount() {
+        Long count = bookingRepository.count();
+        return new ApiResponse<>("Bookings' count successful", count);
+    }
+
     public ApiResponse<String> deleteExistingBooking(Long id) {
         if (bookingRepository.existsById(id)) {
             bookingRepository.deleteById(id);
@@ -106,5 +110,27 @@ public class BookingService {
         } else {
             return new ApiResponse<>("No booking found to delete", null);
         }
+    }
+
+    public ApiResponse<Long> getMostBookedSlotId() {
+        List<Booking> bookings = bookingRepository.findAll();
+        Map<Long, Integer> slotBookingCount = new HashMap<>();
+
+        for (Booking booking : bookings) {
+            Long slotId = booking.getSlotId();
+            slotBookingCount.put(slotId, slotBookingCount.getOrDefault(slotId, 0) + 1);
+        }
+
+        Long mostBookedSlotId = null;
+        int maxBookings = 0;
+
+        for (Map.Entry<Long, Integer> entry : slotBookingCount.entrySet()) {
+            if (entry.getValue() > maxBookings) {
+                mostBookedSlotId = entry.getKey();
+                maxBookings = entry.getValue();
+            }
+        }
+
+        return new ApiResponse<>("Most booked slot found successfully", mostBookedSlotId);
     }
 }

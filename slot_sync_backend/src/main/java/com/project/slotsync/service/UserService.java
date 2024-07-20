@@ -61,6 +61,11 @@ public class UserService {
         }
     }
 
+    public ApiResponse<Long> showAllUsersCount() {
+        Long count = userRepository.count();
+        return new ApiResponse<>("Users' count successful", count);
+    }
+
     public ApiResponse<User> updateExistingUserDetails(String username, UpdateUserRequest request) {
         Optional<User> existingUser = userRepository.findByUsername(username);
         if (existingUser.isPresent()) {
