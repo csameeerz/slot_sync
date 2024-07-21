@@ -8,7 +8,7 @@
   - **Spring Framework:** For building the Java application.
   - **Spring Boot:** Simplifies the setup and development of new Spring applications.
   - **JPA and Hibernate:** For database operations and integration with PostgreSQL.
-     **JWT Security** For user's authentication.
+  - **JWT Security** For user's authentication.
   - **PostgreSQL:** The relational database management system.
   - **Amazon S3:** For storing slot related images.
 
