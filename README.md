@@ -4,7 +4,6 @@
 **Backend:**
   - **Java:** The programming language for the backend.
   - **Maven:** The build automation tool.
-  - **Junit and Mockito:** For unit testing.
   - **Spring Framework:** For building the Java application.
   - **Spring Boot:** Simplifies the setup and development of new Spring applications.
   - **JPA and Hibernate:** For database operations and integration with PostgreSQL.
